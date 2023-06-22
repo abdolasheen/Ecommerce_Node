@@ -1,4 +1,4 @@
-import couponModel from '../../../../DB/model/coupon.model.js';
+import couponModel from '../../../../DB/model/Coupon.model.js';
 import cloudinary from '../../../utils/cloudinary.js'
 
 import { asyncHandler } from '../../../utils/errorHandling.js';

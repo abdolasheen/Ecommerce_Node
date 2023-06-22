@@ -13,10 +13,10 @@ import ApiFeatures from "../../utils/apiFeatures.js";
 router.get('/', async(req ,res)=>{
     // console.log(req.query);
    
-    // const apiFeatures = new ApiFeatures(productModel.find(),req.query).paginate().filter().sort().select().sort();
-    // const products = await apiFeatures.mongooseQuery
+    const apiFeatures = new ApiFeatures(productModel.find(),req.query).paginate().filter().sort().select().sort();
+    const products = await apiFeatures.mongooseQuery
 //    const products = await productModel.find().skip(1).limit(1) // skip an limit exist im Mongo DB
-   return res.json({message : "product Router"})
+   return res.json({products})
 })
 
 
