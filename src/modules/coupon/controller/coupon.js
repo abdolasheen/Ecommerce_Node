@@ -1,6 +1,6 @@
 import couponModel from '../../../../DB/model/coupon.model.js';
 import cloudinary from '../../../utils/cloudinary.js'
-import slugify from 'slugify'
+
 import { asyncHandler } from '../../../utils/errorHandling.js';
 
 
