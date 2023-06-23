@@ -41,6 +41,9 @@ const initApp = (app, express) => {
     //convert Buffer Data
     app.use(express.json({}))
     //Setup API Routing 
+    app.get("/",(req,res,next)=>{
+      return res.status(200).send("Welcome to ECommerce")
+    })
     app.use(`/auth`, authRouter)
     app.use(`/user`, userRouter)
     app.use(`/product`, productRouter)
