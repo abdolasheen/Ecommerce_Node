@@ -9,7 +9,7 @@ import { endPoint } from "./category.endPoint.js";
 const router = Router();
 
 router.use("/:categoryId/subcategory", subcategoryRouter);
-router.get("/", auth(Object.values(roles)), categoryController.categoryList);
+router.get("/", categoryController.categoryList);
 
 router.post(
   "/",
