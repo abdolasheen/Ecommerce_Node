@@ -13,7 +13,8 @@ export const couponList = asyncHandler(async (req, res, next) => {
 })
 
 
-export const createCoupon = asyncHandler(async(req,res,next)=>{
+export const createCoupon =asyncHandler( async(req,res,next)=>{
+    
   
     const name = req.body.name.toLowerCase();
     

@@ -30,7 +30,7 @@ export const auth =  (accessRoles =[] ) =>{
             return next(new Error("Not registered user",{cause : 401}))
         }
         // console.log({token : decoded.iat , changePassTime : parseInt(user.changePasswordDate.getTime() / 1000)});
-        if(  parseInt(user.changePasswordDate.getTime() / 1000) > decoded.iat ){
+        if(  parseInt(user.changePasswordDate?.getTime() / 1000) > decoded.iat ){
             return next(new Error("Expired Token",{cause : 400}))
 
         }

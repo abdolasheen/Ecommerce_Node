@@ -3,6 +3,8 @@ import productModel from "../../../../DB/model/Product.model.js";
 import orderModel from "../../../../DB/model/Order.model.js";
 import { asyncHandler } from "../../../utils/errorHandling.js";
 import cartModel from "../../../../DB/model/Cart.model.js";
+import Stripe from "stripe";
+import payment from "../../../utils/payment.js";
 // import { createInvoice } from "../../../utils/pdf.js"
 // ? Method one place orders from postMan
 // export const createOrder = async(req,res,next)=>{
@@ -303,6 +305,7 @@ export const createOrder = asyncHandler(async(req,res,next)=>{
     
 
 // const invoice = {
+
 //   shipping: {
 //     name: "John Doe",
 //     address: "1234 Main Street",
@@ -331,6 +334,43 @@ export const createOrder = asyncHandler(async(req,res,next)=>{
 // };
 
 // createInvoice(invoice, "invoice.pdf");
+//?integration with stripe
+if(order.paymentType == "card"){
+    const stripe = new Stripe(process.env.Secret_key)
+    if(req.body.coupon){
+        const coupon = await stripe.coupons.create({percent_off : req.body.coupon.amount ,duration :'once'});
+        req.body.couponId = coupon.id
+    }
+
+    const session = await payment({
+        stripe,
+        payment_method_types : ['card'],
+        mode:'payment',
+        customer_email:req.user.email,
+        metadata:{
+            orderId : order._id.toString()
+        },
+        cancel_url: `${process.env.cancel_url}`,
+        success_url : `${process.env.success_url}`,
+        line_items : order.products.map(product =>{
+            return {
+                price_data : {
+                    currency :'usd',
+                    product_data :{
+                        name : product.name
+                    },
+                    unit_amount : product.unitPrice *100
+                },
+                quantity :product.quantity
+
+            }
+        }),
+        discounts : req.body.couponId ? [{coupon : req.body.couponId}] :[]
+    })
+    return res.status(201).json({message : "Done" , order,session,url:session.url})
+
+}
+
 return res.status(201).json({message : "Done" , order})
 
 
@@ -376,3 +416,7 @@ export const updateOrderStatusByAdmin = asyncHandler(async(req,res,next)=>{
   
     return res.status(200).json({message : "Done"})
 })
+// export const onlinePayment = asyncHandler(async(req,res,next)=>{
+//     let cart = await cartModel.findById(req.params.id);
+//     let totalOrderPrice = cart.tota
+// })
