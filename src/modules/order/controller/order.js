@@ -420,3 +420,32 @@ export const updateOrderStatusByAdmin = asyncHandler(async(req,res,next)=>{
 //     let cart = await cartModel.findById(req.params.id);
 //     let totalOrderPrice = cart.tota
 // })
+
+
+
+export const webHook = asyncHandler(async(req, res) => {
+    const sig = req.headers['stripe-signature'];
+  
+    let event;
+    const stripe = new Stripe(process.env.Secret_key)
+  
+    try {
+      event = stripe.webhooks.constructEvent(req.body, sig, process.env.webHookSecretKey);
+    } catch (err) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
+      return;
+    }
+    
+    const {orderId} = event.data.object.metadata
+    // Handle the event
+    if (event.type != 'checkout.session.async_payment_succeeded') {
+        //updateOrder state
+        await orderModel.updateOne({_id:orderId},{status :"rejected"});
+        return res.status(400).json({message : 'Rejected Order'})
+     
+    }
+    await orderModel.updateOne({_id:orderId},{status :"placed"});
+
+    return res.status(200).json({message : 'Done'})
+
+  })

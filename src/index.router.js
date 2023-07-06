@@ -39,7 +39,14 @@ const initApp = (app, express) => {
 
     }
     //convert Buffer Data
-    app.use(express.json({}))
+    app.use((req,res,next)=>{
+   
+
+      if(req.originalUrl == '/order/webhook'){
+        next()
+      }
+    express.json({})(req,res,next)
+    })
     //Setup API Routing 
     app.get("/",(req,res,next)=>{
       return res.status(200).send("Welcome to ECommerce")
@@ -54,6 +61,9 @@ const initApp = (app, express) => {
     app.use(`/cart`, cartRouter)
     app.use(`/order`, orderRouter)
     app.use(`/brand`, branRouter)
+
+
+
 
     app.all('*', (req, res, next) => {
         res.send("In-valid Routing Plz check url  or  method")
