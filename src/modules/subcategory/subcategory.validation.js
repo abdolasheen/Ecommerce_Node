@@ -5,7 +5,8 @@ import { generalFields } from '../../middleware/validation.js'
 export const createsubCategory = joi.object({
     name: joi.string().min(2).max(50).required(),
     file:generalFields.file.required(),
-    categoryId: generalFields.id
+    categoryId: generalFields.id,
+    createdBy :generalFields.id,
 }).required()
 
 

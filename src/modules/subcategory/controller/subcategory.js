@@ -13,19 +13,21 @@ export const subcategoryList = asyncHandler(async (req, res, next) => {
 })
 
 export const createsubCategory = asyncHandler(async(req,res,next)=>{
+    
     const {categoryId} = req.params;
     const category = await categoryModel.findById(categoryId);
    
     if(!category){
         return next(new Error("in-valid category ID"),{cause : 404})
     }
-    const {name} = req.body;
+    const {name,createdBy} = req.body;
     const {secure_url,public_id} =await cloudinary.uploader.upload(req.file.path ,{ folder: `${process.env.APP_NAME}/category/${categoryId}` })
     const subcategory = await subCategoryModel.create({
         name,
         slug:slugify(name ,"_"),
         image : {secure_url,public_id},
-        categoryId
+        categoryId,
+        createdBy
     });
     if(!subcategory){
         await cloudinary.uploader.destroy(public_id);
@@ -44,6 +46,7 @@ export const updatesubCategory = asyncHandler(async (req, res, next) => {
 
     if (req.body.name) {
         subcategory.name = req.body.name;
+        subcategory.createdBy = req.body.createdBy;
         subcategory.slug = slugify(req.body.name, '_');
     }
 
@@ -53,6 +56,7 @@ export const updatesubCategory = asyncHandler(async (req, res, next) => {
         await cloudinary.uploader.destroy(subcategory.image.public_id)
         subcategory.image = { secure_url, public_id }
     }
+   
     await subcategory.save()
     return res.status(200).json({ message: "Done", subcategory })
 })
