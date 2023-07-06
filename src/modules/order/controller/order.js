@@ -348,7 +348,7 @@ if(order.paymentType == "card"){
         mode:'payment',
         customer_email:req.user.email,
         metadata:{
-            orderId : order._id.toString()
+            "orderId" : order._id.toString()
         },
         cancel_url: `${process.env.cancel_url}`,
         success_url : `${process.env.success_url}`,
