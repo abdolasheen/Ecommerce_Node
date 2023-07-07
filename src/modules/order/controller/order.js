@@ -423,7 +423,7 @@ export const updateOrderStatusByAdmin = asyncHandler(async(req,res,next)=>{
 
 
 
-export const webHook = asyncHandler(async(req, res) => {
+export const webHook = asyncHandler(async(req, res,next) => {
     const sig = req.headers['stripe-signature'];
   
     let event;
@@ -438,7 +438,7 @@ export const webHook = asyncHandler(async(req, res) => {
     
     const {orderId} = event.data.object.metadata
     // Handle the event
-    return res.json({data : event.type})
+
     if (event.type != 'checkout.session.async_payment_succeeded') {
         //updateOrder state
         await orderModel.updateOne({_id:orderId},{status :"rejected"});
