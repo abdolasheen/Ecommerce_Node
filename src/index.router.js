@@ -40,12 +40,12 @@ const initApp = (app, express) => {
     }
     //convert Buffer Data
     app.use((req,res,next)=>{
-   
-
       if(req.originalUrl == '/order/webhook'){
         next()
+      }else{
+        express.json({})(req,res,next)
+
       }
-    express.json({})(req,res,next)
     })
     //Setup API Routing 
     app.get("/",(req,res,next)=>{
