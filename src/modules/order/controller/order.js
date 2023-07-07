@@ -424,10 +424,10 @@ export const updateOrderStatusByAdmin = asyncHandler(async(req,res,next)=>{
 
 
 export const webHook = asyncHandler(async(req, res,next) => {
+    const stripe = new Stripe(process.env.Secret_key)
     const sig = req.headers['stripe-signature'];
   
     let event;
-    const stripe = new Stripe(process.env.Secret_key)
   
     try {
       event = stripe.webhooks.constructEvent(req.body, sig, process.env.webHookSecretKey);
@@ -439,7 +439,7 @@ export const webHook = asyncHandler(async(req, res,next) => {
     const {orderId} = event.data.object.metadata
     // Handle the event
 
-    if (event.type != 'checkout.session.async_payment_succeeded') {
+    if (event.type != 'checkout.session.completed') {
         //updateOrder state
         await orderModel.updateOne({_id:orderId},{status :"rejected"});
         return res.status(400).json({message : 'Rejected Order'})
