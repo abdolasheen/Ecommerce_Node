@@ -10,7 +10,7 @@ const router = Router();
 
 router.use("/:categoryId/subcategory", subcategoryRouter);
 router.get("/", categoryController.categoryList);
-
+router.get("/:id",validation(validators.getCategoryById),categoryController.getCategoryById)
 router.post(
   "/",
   auth(endPoint.create),
@@ -18,14 +18,7 @@ router.post(
   validation(validators.createCategory),
   categoryController.createCategory
 );
-// router.post(
-//   "/",
-//   auth,
-//   authorized(endPoint.create),
-//   fileUpload(fileValidation.image).single("image"),
-//   validation(validators.createCategory),
-//   categoryController.createCategory
-// );
+
 
 router.put(
   "/:categoryId",

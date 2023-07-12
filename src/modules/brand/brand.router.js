@@ -8,6 +8,7 @@ import { endPoint } from './brand.endPoint.js';
 const router = Router()
 
 router.get('/',brandController.brandList)
+router.get('/:brandId',brandController.getSpecificBrand)
 
 
 

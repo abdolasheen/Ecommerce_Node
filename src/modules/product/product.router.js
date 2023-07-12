@@ -9,6 +9,7 @@ import { auth, roles } from "../../middleware/auth.js";
 import reviewRouter from "../reviews/reviews.router.js"
 import productModel from "../../../DB/model/Product.model.js";
 import ApiFeatures from "../../utils/apiFeatures.js";
+router.use("/:productId/review",reviewRouter)
 
 router.get('/', async(req ,res)=>{
     // console.log(req.query);
@@ -18,9 +19,12 @@ router.get('/', async(req ,res)=>{
 //    const products = await productModel.find().skip(1).limit(1) // skip an limit exist im Mongo DB
    return res.json({products})
 })
+router.get('/:productId', async(req ,res)=>{
+    const {productId} = req.params;
+    const product = await productModel.findById(productId)
+   return res.json({product})
+})
 
-
-router.use("/:productId/review",reviewRouter)
 router.post("/",
 validation(validators.headers, true),
 auth(endPoint.create),

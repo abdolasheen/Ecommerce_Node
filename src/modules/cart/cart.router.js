@@ -9,6 +9,7 @@ import { endPoint } from "./cart.endPoint.js";
 router.post("/",auth(Object.keys(roles)),cartController.createCart)
 router.patch("/remove",auth(Object.keys(roles)),cartController.deleteItems)
 router.patch("/empty",auth(Object.keys(roles)),cartController.empty)
+router.get("/",auth(Object.keys(roles)),cartController.getUserCart)
 
 
 

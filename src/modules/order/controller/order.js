@@ -189,6 +189,7 @@ import payment from "../../../utils/payment.js";
 
 // }
 // ? Method three combine two methods in one End point
+
 export const createOrder = asyncHandler(async(req,res,next)=>{
     let {address , phone ,note ,couponName ,paymentType} = req.body;
    if(!req.body.products){
@@ -422,7 +423,21 @@ export const updateOrderStatusByAdmin = asyncHandler(async(req,res,next)=>{
 // })
 
 
-
+export const getUserOrders = asyncHandler(async (req,res,next)=>{
+    const userOrders = await orderModel.findOne({userId : req.user._id})
+    if(!userOrders){
+        return next(new Errors(`no Placed Orders yet`,{cause : 404}))
+    }
+    return res.status(200).json({message: "Done" , userOrders})
+})
+export const getOrderById = asyncHandler(async (req,res,next)=>{
+    const{ orderId} = req.params
+    const order = await orderModel.findOne({userId : req.user._id} , { _id : orderId})
+    if(!order){
+        return next(new Errors(`In-valid Order Id`,{cause : 400}))
+    }
+    return res.status(200).json({message: "Done" , order})
+})
 export const webHook = asyncHandler(async(req, res,next) => {
     const stripe = new Stripe(process.env.Secret_key)
     const sig = req.headers['stripe-signature'];

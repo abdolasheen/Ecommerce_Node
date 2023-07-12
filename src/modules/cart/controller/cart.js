@@ -40,6 +40,7 @@ export const createCart =asyncHandler(async(req,res,next)=>{
     return res.status(200).json({message : "Done" ,cart })
 
 })
+
 export const deleteItems = asyncHandler(async(req,res,next)=>{
     const {productIds} = req.body;
     const cart = await cartModel.updateOne({userId: req.user._id},{
@@ -61,4 +62,12 @@ export const empty = asyncHandler(async(req,res,next)=>{
     })
 
     return res.status(200).json({message:"Done",cart})
+})
+export const getUserCart = asyncHandler(async(req,res,next)=>{
+    const cart = await cartModel.findOne({userId : req.user._id});
+    if(!cart){
+        return next(new Error(`user Cart is Empty`,{cause : 404}))
+    }
+    return res.status(200).json({message :"Done" , cart})
+
 })

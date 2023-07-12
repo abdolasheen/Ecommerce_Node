@@ -30,3 +30,7 @@ export const updateOrderStatusByAdmin = joi.object({
     orderId : generalFields.id
    
 }).required()
+
+export const getOrderById = joi.object({
+orderId : generalFields.id
+}).required()

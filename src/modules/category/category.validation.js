@@ -14,4 +14,11 @@ export const updateCategory = joi.object({
     categoryId:generalFields.id,
     name: joi.string().min(2).max(50),
     file:generalFields.file
+}).required();
+
+export const getCategoryById = joi.object({
+
+
+    id:generalFields.id,
+   
 }).required()

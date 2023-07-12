@@ -13,6 +13,14 @@ auth(endPoint.create),
     validation(validators.createsubCategory),
     subcategoryController.createsubCategory)
 
+router.get('/',
+    
+        subcategoryController.getAllSubCategories)
+
+
+router.get('/:SubCategoryId',
+    
+        subcategoryController.getSpecificSubCategory)
 
 router.put('/:subcategoryId',
 auth(endPoint.update),

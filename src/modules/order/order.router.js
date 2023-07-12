@@ -15,6 +15,16 @@ router.post("/",auth(Object.keys(roles)),
 validation(validators.createOrder),
  orderController.createOrder)
 
+ router.get("/",auth(Object.keys(roles)),
+
+ orderController.getUserOrders)
+
+ router.get("/:orderId",auth(Object.keys(roles)),
+validation(validators.getOrderById),
+
+
+ orderController.getOrderById)
+
  router.patch("/:orderId",auth(Object.keys(roles)),
 validation(validators.cancelOrder),
  orderController.cancelOrder)

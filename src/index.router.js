@@ -8,6 +8,7 @@ import orderRouter from './modules/order/order.router.js'
 import productRouter from './modules/product/product.router.js'
 import reviewsRouter from './modules/reviews/reviews.router.js'
 import subcategoryRouter from './modules/subcategory/subcategory.router.js'
+import whishListRouter from './modules/wishList/wishList.router.js'
 import userRouter from './modules/user/user.router.js'
 import connectDB from '../DB/connection.js'
 import { globalErrorHandling } from './utils/errorHandling.js'
@@ -61,12 +62,13 @@ const initApp = (app, express) => {
     app.use(`/cart`, cartRouter)
     app.use(`/order`, orderRouter)
     app.use(`/brand`, branRouter)
+    app.use(`/wishList`, whishListRouter)
 
 
 
 
     app.all('*', (req, res, next) => {
-        res.send("In-valid Routing Plz check url  or  method")
+        res.status(404).send("In-valid Routing Plz check url  or  method")
     })
 
 

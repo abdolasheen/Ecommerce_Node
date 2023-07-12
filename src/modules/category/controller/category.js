@@ -16,6 +16,18 @@ export const categoryList = asyncHandler(async (req, res, next) => {
     // console.log(category);
     return res.status(200).json({ message: "Done", category })
 })
+export const getCategoryById = asyncHandler(async (req, res, next) => {
+    const {id} = req.params
+
+    const category = await categoryModel.findById(id).populate([
+
+        {
+            path : "subcategory"
+        }
+    ])
+    // console.log(category);
+    return res.status(200).json({ message: "Done", category })
+})
 
 // export const createCategory = asyncHandler(async (req, res, next) => {
 //     const { name } = req.body;

@@ -11,7 +11,12 @@ export const brandList = asyncHandler(async (req, res, next) => {
   
     return res.status(200).json({ message: "Done", brand })
 })
-
+export const getSpecificBrand = asyncHandler(async (req, res, next) => {
+    const {brandId} = req.params;
+    const brand = await brandModel.findById(brandId,{ isDeleted: false })
+  
+    return res.status(200).json({ message: "Done", brand })
+})
 
 export const createBrand = asyncHandler(async(req,res,next)=>{
     const {name} = req.body;

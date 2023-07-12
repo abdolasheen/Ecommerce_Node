@@ -7,11 +7,15 @@ import { asyncHandler } from '../../../utils/errorHandling.js';
 
 
 
-export const subcategoryList = asyncHandler(async (req, res, next) => {
-    const subcategory = await categoryModel.find({ isDeleted: false });
+export const getAllSubCategories = asyncHandler(async (req, res, next) => {
+    const subcategory = await subCategoryModel.find();
     return res.status(200).json({ message: "Done", subcategory })
 })
-
+export const getSpecificSubCategory = asyncHandler(async (req, res, next) => {
+    const {SubCategoryId} = req.params;
+    const subcategory = await subCategoryModel.findById(SubCategoryId);
+    return res.status(200).json({ message: "Done", subcategory })
+})
 export const createsubCategory = asyncHandler(async(req,res,next)=>{
     
     const {categoryId} = req.params;
