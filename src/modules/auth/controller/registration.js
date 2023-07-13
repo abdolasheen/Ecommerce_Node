@@ -20,7 +20,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
   const link = `${process.env.BaseUrl}/auth/confirmEmail/${token}`;
 
   const html = `<h1>please confirm your Email <a href=${link}>Click here</a></h1>`;
-  const emailResult = sendEmail({
+  const emailResult = await sendEmail({
     to: email,
     subject: `Email Confirmation`,
     html,
