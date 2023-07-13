@@ -17,7 +17,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
   const token = generateToken({ payload: { email }, expiresIn: 60 * 60 });
   // const rfToken = generateToken({payload : {id : user._id}, expiresIn : 60 *60*24*30})
   // const link = `${req.protocol}//${req.headers.host}/confirmEmail/${token}`;
-  const link = `http://localhost:5000/auth/confirmEmail/${token}`;
+  const link = `${process.env.BaseUrl}/auth/confirmEmail/${token}`;
 
   const html = `<h1>please confirm your Email <a href=${link}>Click here</a></h1>`;
   const emailResult = sendEmail({
@@ -48,7 +48,7 @@ export const confirmEmail = asyncHandler(async (req,res,next)=>{
   }
   user.confirmEmail = true;
   await user.save();
-  return res.status(201).redirect("https://www.google.com.eg/")
+  return res.status(201).redirect(process.env.BaseUrl)
 
 })
 export const login = asyncHandler(async (req, res, next) => {
