@@ -49,7 +49,8 @@ export const confirmEmail = asyncHandler(async (req,res,next)=>{
   }
   user.confirmEmail = true;
   await user.save();
-  return res.status(201).redirect(process.env.BaseUrl)
+  // return res.status(201).redirect(process.env.baseUrl)
+  return res.status(201).redirect(process.env.baseUrl)
 
 })
 export const login = asyncHandler(async (req, res, next) => {
