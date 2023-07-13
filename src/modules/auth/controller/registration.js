@@ -17,7 +17,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
   const token = generateToken({ payload: { email }, expiresIn: 60 * 60 });
   // const rfToken = generateToken({payload : {id : user._id}, expiresIn : 60 *60*24*30})
   // const link = `${req.protocol}//${req.headers.host}/confirmEmail/${token}`;
-  const link = `${process.env.BaseUrl}/auth/confirmEmail/${token}`;
+  const link = `${process.env.baseUrl}/auth/confirmEmail/${token}`;
 
   const html = `<h1>please confirm your Email <a href=${link}>Click here</a></h1>`;
   const emailResult = await sendEmail({
@@ -25,6 +25,7 @@ export const signUp = asyncHandler(async (req, res, next) => {
     subject: `Email Confirmation`,
     html,
   });
+  console.log(emailResult);
   if (!emailResult) {
     return next(new Error("In valid email"));
   }
